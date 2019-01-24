@@ -4,6 +4,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.poi.sl.draw.geom.Guide;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -20,6 +21,7 @@ public class ParseHandler extends DefaultHandler {
     ExcelWriter writer = new ExcelWriter();
     int gcCounter = 1;
     Runtime r = Runtime.getRuntime();
+    GUI g = new GUI();
 
     // Constructor for Parsing the XML document
     // Calls for the ExcelWriter to generate the file to be written to
@@ -44,10 +46,13 @@ public class ParseHandler extends DefaultHandler {
             SAXParser parser = factory.newSAXParser();
             parser.parse(bookXmlFileName, this);
         } catch (ParserConfigurationException e) {
+            g.setStatusLbl("Parse Config Error");
             System.out.println("ParserConfig error");
         } catch (SAXException e) {
+            g.setStatusLbl("XML Not Well Formed");
             System.out.println("SAXException : xml not well formed");
         } catch (IOException e) {
+            g.setStatusLbl("IO Error");
             System.out.println("IO error");
         }
     }

@@ -1,32 +1,67 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 
-public class GUI extends Frame {
+public class GUI extends Panel {
+    Frame mainFrame; // hueh hueh hack the mainframe
     String filename;
+    Label statusLbl = new Label("status");
 
     public void generate() {
+        mainFrame = new Frame("Generate Metabolites");
+        mainFrame.setSize(500,250);//frame size 300 width and 300 height
+        mainFrame.setVisible(true);//now frame will be visible, by default not visible
+        mainFrame.setLayout(null);//no layout manager
+
         Button generateBtn = new Button("Generate Metabolite Excel File");
-        generateBtn.setBounds(30,100,300,30);// setting button position
-        this.add(generateBtn);//adding button into frame
-        this.setSize(350,300);//frame size 300 width and 300 height
-        this.setLayout(null);//no layout manager
-        this.setVisible(true);//now frame will be visible, by default not visible
+        generateBtn.setBounds(100,200,300,45);// setting button position
+        mainFrame.add(generateBtn);//adding button into frame
+        mainFrame.add(statusLbl);
+        mainFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        });
+        statusLbl.setBounds(5, 50, 485, 50);
+
         generateBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                new ParseHandler("hmdb_metabolites.xml");
+                new ParseHandler(getFilename());
+                statusLbl.setText("File written to metabolites.xlsx");
             }
         });
 
-//        //Create a file chooser
-//        FileDialog fd = new FileDialog(this);
-//        fd.setFile("*.xml");
-//        fd.setVisible(true);
-//        String filename = fd.getFile();
-//        System.out.println(filename);
+        final FileDialog fd = new FileDialog(mainFrame, "Select file");
+        Button fileDialogButton = new Button("Open file");
+        fileDialogButton.setBounds(100, 150, 150, 30);
+        mainFrame.add(fileDialogButton);
+
+        fileDialogButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fd.setVisible(true);
+                if (fd.getFile() != null) {
+                    filename = fd.getFile();
+                    statusLbl.setText("File selected: " + fd.getDirectory() + fd.getFile());
+                } else {
+                    filename = "hmdb_metabolites.xml";
+                    statusLbl.setText("No file selected, default is hmdb_metabolites.xml in current directory.");
+                }
+            }
+        });
+    }
+
+    public void setStatusLbl(String message) {
+        statusLbl.setText(message);
     }
 
     public String getFilename() {
-        return filename;
+        if (filename == null) {
+            return "hmdb_metabolites.xml";
+        } else {
+            return filename;
+        }
     }
 }

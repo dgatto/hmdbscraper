@@ -14,6 +14,7 @@ public class ExcelWriter {
     static int rowNum = 1;
     static CellStyle styleLightBlue;
     static CellStyle styleLightGreen;
+    static GUI g = new GUI();
 
     public static void generateFile() {
         workbook = new XSSFWorkbook();
@@ -73,7 +74,7 @@ public class ExcelWriter {
         cell3.setCellValue(m.getMonoisotopicMass());
     }
 
-    public static void finish() throws IOException{
+    public static void finish() throws IOException {
         // Resize all columns to fit the content size
         for(int i = 0; i < columns.length; i++) {
             sheet.autoSizeColumn(i);
@@ -86,5 +87,7 @@ public class ExcelWriter {
 
         // Closing the workbook
         workbook.close();
+
+        g.setStatusLbl("Successfully written to metabolites.xlsx");
     }
 }
