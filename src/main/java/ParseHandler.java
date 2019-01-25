@@ -4,7 +4,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.apache.poi.sl.draw.geom.Guide;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -47,13 +46,13 @@ public class ParseHandler extends DefaultHandler {
             parser.parse(bookXmlFileName, this);
         } catch (ParserConfigurationException e) {
             g.setStatusLbl("Parse Config Error");
-            System.out.println("ParserConfig error");
+            e.printStackTrace();
         } catch (SAXException e) {
             g.setStatusLbl("XML Not Well Formed");
-            System.out.println("SAXException : xml not well formed");
+            e.printStackTrace();
         } catch (IOException e) {
             g.setStatusLbl("IO Error");
-            System.out.println("IO error");
+            e.printStackTrace();
         }
     }
 

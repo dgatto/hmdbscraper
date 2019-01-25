@@ -34,8 +34,8 @@ public class GUI extends Panel {
         });
 
         final FileDialog fd = new FileDialog(mainFrame, "Select file");
-        Button fileDialogButton = new Button("Open file");
-        fileDialogButton.setBounds(100, 150, 150, 30);
+        Button fileDialogButton = new Button("Select 'hmdb_metabolites.xml' file location.");
+        fileDialogButton.setBounds(100, 150, 300, 30);
         mainFrame.add(fileDialogButton);
 
         fileDialogButton.addActionListener(new ActionListener() {
@@ -43,7 +43,7 @@ public class GUI extends Panel {
             public void actionPerformed(ActionEvent e) {
                 fd.setVisible(true);
                 if (fd.getFile() != null) {
-                    filename = fd.getFile();
+                    filename = fd.getDirectory() + fd.getFile();
                     statusLbl.setText("File selected: " + fd.getDirectory() + fd.getFile());
                 } else {
                     filename = "hmdb_metabolites.xml";
@@ -58,10 +58,6 @@ public class GUI extends Panel {
     }
 
     public String getFilename() {
-        if (filename == null) {
-            return "hmdb_metabolites.xml";
-        } else {
-            return filename;
-        }
+        return filename;
     }
 }
