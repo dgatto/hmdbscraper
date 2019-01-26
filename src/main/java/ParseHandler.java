@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -16,6 +18,8 @@ public class ParseHandler extends DefaultHandler {
     boolean bName = false;
     boolean bFormula = false;
     boolean bMonoisotopicWeight = false;
+    List<Integer> lowerLimits = new ArrayList<>();
+    List<Integer> upperLimits = new ArrayList<>();
     Metabolite metabolite = new Metabolite();
     ExcelWriter writer = new ExcelWriter();
     int gcCounter = 1;
@@ -27,6 +31,10 @@ public class ParseHandler extends DefaultHandler {
     // Parses the XML document
     // Finishes up the Excel doc writing
     public ParseHandler(String bookXmlFileName) {
+        lowerLimits.add(1);
+        lowerLimits.add(300);
+        upperLimits.add(30);
+        upperLimits.add(350);
         this.bookXmlFileName = bookXmlFileName;
         writer.generateFile(); // Generates the base .xlsx file to be written on
         parseDocument(); // Parses XML document and writes to the Excel file one line at a time
@@ -71,15 +79,25 @@ public class ParseHandler extends DefaultHandler {
 
         if (bMetabolite) {
             if (element.equals("accession") && !bAccession) {
-                bAccession = true;
-                metabolite.setAccession(tmpValue);
-            } else if (element.equalsIgnoreCase("name") && !bName) {
+                int accessionNumber = Integer.parseInt(tmpValue.substring(4));
+                // Check if in range
+                for(int i = 0; i < lowerLimits.size(); i++) {
+                    if (accessionNumber >= lowerLimits.get(i) && accessionNumber <= upperLimits.get(i)) {
+                        System.out.println("LOWER LIMIT: " + lowerLimits.get(i));
+                        System.out.println("UPPER LIMIT: " + upperLimits.get(i));
+
+                        bAccession = true;
+                        System.out.println(tmpValue);
+                        metabolite.setAccession(tmpValue);
+                    }
+                }
+            } else if (element.equalsIgnoreCase("name") && !bName && bAccession) {
                 metabolite.setName(tmpValue);
                 bName = true;
-            } else if (element.equalsIgnoreCase("chemical_formula") && !bFormula) {
+            } else if (element.equalsIgnoreCase("chemical_formula") && !bFormula && bAccession) {
                 metabolite.setFormula(tmpValue);
                 bFormula = true;
-            } else if (element.equalsIgnoreCase("monisotopic_molecular_weight") && !bMonoisotopicWeight) {
+            } else if (element.equalsIgnoreCase("monisotopic_molecular_weight") && !bMonoisotopicWeight && bAccession) {
                 metabolite.setMonoisotopicMass(tmpValue);
             } else {
                 if (metabolite.getName() != null
