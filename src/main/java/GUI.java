@@ -1,11 +1,14 @@
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
 
 public class GUI extends Panel {
-    Frame mainFrame; // hueh hueh hack the mainframe
+    Frame mainFrame; // hueh hueh gotta hack the mainframe
     String filename;
+    String range;
     Label statusLbl = new Label("status");
+    Label rangeLbl = new Label("<html>Use comma separated values to specify a range of Metabolites.<br />Use semicolons to specify multiple ranges.<br />Example: 1,50;200,220;500,700</html>");
+    JTextField rangeField = new JTextField(20);
 
     public void generate() {
         mainFrame = new Frame("Generate Metabolites");
@@ -15,20 +18,37 @@ public class GUI extends Panel {
 
         Button generateBtn = new Button("Generate Metabolite Excel File");
         generateBtn.setBounds(100,200,300,45);// setting button position
-        mainFrame.add(generateBtn);//adding button into frame
+        mainFrame.add(generateBtn);
         mainFrame.add(statusLbl);
+        mainFrame.add(rangeLbl);
+        mainFrame.add(rangeField);
         mainFrame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
             }
         });
-        statusLbl.setBounds(5, 50, 485, 50);
+//        statusLbl.setBounds(5, 100, 485, 50);
+        rangeLbl.setBounds(5, 40, 485, 50);
+
+        Font font1 = new Font("SansSerif", Font.BOLD, 10);
+        rangeField.setBounds(5,90,200,50);
+        rangeField.setFont(font1);
+
+        rangeField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String text = rangeField.getText();
+                rangeField.setText(text += "\n");
+                rangeField.selectAll();
+            }
+        });
 
         generateBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                new ParseHandler(getFilename());
+                range = rangeField.getText();
+                new ParseHandler(getFilename(), getRange());
                 statusLbl.setText("File written to metabolites.xlsx");
             }
         });
@@ -59,5 +79,9 @@ public class GUI extends Panel {
 
     public String getFilename() {
         return filename;
+    }
+
+    public String getRange() {
+        return range;
     }
 }
