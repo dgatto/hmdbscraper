@@ -14,7 +14,7 @@ public class ExcelWriter {
     static int rowNum = 1;
     static CellStyle styleLightBlue;
     static CellStyle styleLightGreen;
-    static GUI g = new GUI();
+    static GUI g = GUI.getSharedApplication();
 
     public static void generateFile() {
         workbook = new XSSFWorkbook();

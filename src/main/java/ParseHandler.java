@@ -14,7 +14,6 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class ParseHandler extends DefaultHandler {
     String bookXmlFileName;
-    String range;
     String tmpValue;
     boolean bMetabolite = false;
     boolean bAccession = false;
@@ -25,8 +24,9 @@ public class ParseHandler extends DefaultHandler {
     List<Integer> upperLimits = new ArrayList<>();
     Metabolite metabolite = new Metabolite();
     ExcelWriter writer = new ExcelWriter();
-    GUI g = new GUI();
     int previousMetaboliteNumber = 1;
+    GUI g = GUI.getSharedApplication();
+    boolean errors = false;
 
     // Constructor for Parsing the XML document
     // Calls for the ExcelWriter to generate the file to be written to
@@ -35,16 +35,22 @@ public class ParseHandler extends DefaultHandler {
     public ParseHandler(String bookXmlFileName, String range) {
         writeRanges(range);
         this.bookXmlFileName = bookXmlFileName;
-        writer.generateFile(); // Generates the base .xlsx file to be written on
-        parseDocument(); // Parses XML document and writes to the Excel file one line at a time
-        try {
-            writer.finish(); // Writes out file
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (!errors) {
+            writer.generateFile(); // Generates the base .xlsx file to be written on
+            parseDocument(); // Parses XML document and writes to the Excel file one line at a time
+            try {
+                writer.finish(); // Writes out file
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
     }
 
+    /**
+     * Takes in set of ranges to parse out by semicolon, then passes to "assignRanges" to assign them to the lists for ranges
+     *
+     * @param ranges
+     */
     protected void writeRanges(String ranges) {
         List<String> totalRanges = new ArrayList<>();
         String[] splitRanges = ranges.split(";");
@@ -53,7 +59,6 @@ public class ParseHandler extends DefaultHandler {
             totalRanges.add(string);
         }
         assignRanges(totalRanges, ",");
-
     }
 
 
@@ -62,8 +67,16 @@ public class ParseHandler extends DefaultHandler {
         for (int i = 0; i < input.size(); i++) {
             String str = input.get(i);
             ranges = str.split(delimiter);
-            lowerLimits.add(Integer.parseInt(ranges[0]));
-            upperLimits.add(Integer.parseInt(ranges[1]));
+
+            // Check for negative input
+            if (Integer.parseInt(ranges[0]) < 0 || Integer.parseInt(ranges[1]) < 0) {
+                errors = true;
+                g.setStatusLbl("ERROR: Negative numbers not allowed!");
+                return;
+            } else {
+                lowerLimits.add(Integer.parseInt(ranges[0]));
+                upperLimits.add(Integer.parseInt(ranges[1]));
+            }
         }
     }
 
@@ -100,7 +113,7 @@ public class ParseHandler extends DefaultHandler {
 
         if (bMetabolite) {
             if (element.equals("accession") && !bAccession) {
-                int currentAccessionNumber = Integer.parseInt(tmpValue.substring(4));
+                int currentAccessionNumber = Integer.parseInt(tmpValue.substring(4)); // cut "HMDB" off front of accession number
                 // Check if in range
                 for(int i = 0; i < lowerLimits.size(); i++) {
                     if (currentAccessionNumber >= lowerLimits.get(i) && currentAccessionNumber <= upperLimits.get(i)) {

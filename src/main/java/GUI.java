@@ -10,9 +10,21 @@ public class GUI extends Panel {
     Label rangeLbl = new Label("<html>Use comma separated values to specify a range of Metabolites.<br />Use semicolons to specify multiple ranges.<br />Example: 1,50;200,220;500,700</html>");
     JTextField rangeField = new JTextField(20);
 
+    private GUI() { } // make your constructor private, so the only war
+    // to access "application" is through singleton pattern
+
+    private static GUI _app;
+
+    public static GUI getSharedApplication()
+    {
+        if (_app == null)
+            _app = new GUI();
+        return _app;
+    }
+
     public void generate() {
         mainFrame = new Frame("Generate Metabolites");
-        mainFrame.setSize(500,250);//frame size 300 width and 300 height
+        mainFrame.setSize(500,500);//frame size 300 width and 300 height
         mainFrame.setVisible(true);//now frame will be visible, by default not visible
         mainFrame.setLayout(null);//no layout manager
 
@@ -28,7 +40,7 @@ public class GUI extends Panel {
                 System.exit(0);
             }
         });
-//        statusLbl.setBounds(5, 100, 485, 50);
+        statusLbl.setBounds(5, 300, 485, 50);
         rangeLbl.setBounds(5, 40, 485, 50);
 
         Font font1 = new Font("SansSerif", Font.BOLD, 10);
@@ -49,7 +61,6 @@ public class GUI extends Panel {
             public void actionPerformed(ActionEvent ae) {
                 range = rangeField.getText();
                 new ParseHandler(getFilename(), getRange());
-                statusLbl.setText("File written to metabolites.xlsx");
             }
         });
 
