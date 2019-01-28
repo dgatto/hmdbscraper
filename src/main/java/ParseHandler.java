@@ -1,7 +1,5 @@
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -26,13 +24,14 @@ public class ParseHandler extends DefaultHandler {
     ExcelWriter writer = new ExcelWriter();
     int previousMetaboliteNumber = 1;
     GUI g = GUI.getSharedApplication();
-    boolean errors = false;
+    boolean errors;
 
     // Constructor for Parsing the XML document
     // Calls for the ExcelWriter to generate the file to be written to
     // Parses the XML document
     // Finishes up the Excel doc writing
     public ParseHandler(String bookXmlFileName, String range) {
+        errors = false;
         writeRanges(range);
         this.bookXmlFileName = bookXmlFileName;
         if (!errors) {
@@ -46,11 +45,6 @@ public class ParseHandler extends DefaultHandler {
         }
     }
 
-    /**
-     * Takes in set of ranges to parse out by semicolon, then passes to "assignRanges" to assign them to the lists for ranges
-     *
-     * @param ranges
-     */
     protected void writeRanges(String ranges) {
         List<String> totalRanges = new ArrayList<>();
         String[] splitRanges = ranges.split(";");
@@ -60,7 +54,6 @@ public class ParseHandler extends DefaultHandler {
         }
         assignRanges(totalRanges, ",");
     }
-
 
     public void assignRanges(List<String> input, String delimiter) {
         String[] ranges;
