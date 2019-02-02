@@ -9,6 +9,8 @@ public class GUI extends Panel {
     Label statusLbl = new Label("status");
     Label rangeLbl = new Label("<html>Use comma separated values to specify a range of Metabolites.<br />Use semicolons to specify multiple ranges.<br />Example: 1,50;200,220;500,700</html>");
     JTextField rangeField = new JTextField(20);
+    ParseHandler parser = new ParseHandler();
+    ExcelWriter writer = ExcelWriter.getSharedApplication();
 
     private GUI() { } // make your constructor private, so the only war
     // to access "application" is through singleton pattern
@@ -60,7 +62,7 @@ public class GUI extends Panel {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 range = rangeField.getText();
-                new ParseHandler(getFilename(), getRange());
+                parser.kickOff(getFilename(), getRange());
             }
         });
 

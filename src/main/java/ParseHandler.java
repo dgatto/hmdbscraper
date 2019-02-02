@@ -21,21 +21,22 @@ public class ParseHandler extends DefaultHandler {
     List<Integer> lowerLimits = new ArrayList<>();
     List<Integer> upperLimits = new ArrayList<>();
     Metabolite metabolite = new Metabolite();
-    ExcelWriter writer = new ExcelWriter();
+    ExcelWriter writer = ExcelWriter.getSharedApplication();
     int previousMetaboliteNumber = 1;
-    GUI g = GUI.getSharedApplication();
     boolean errors;
+
+    public ParseHandler() {}
 
     // Constructor for Parsing the XML document
     // Calls for the ExcelWriter to generate the file to be written to
     // Parses the XML document
     // Finishes up the Excel doc writing
-    public ParseHandler(String bookXmlFileName, String range) {
+    protected void kickOff(String bookXmlFileName, String range) {
         errors = false;
         writeRanges(range);
         this.bookXmlFileName = bookXmlFileName;
         if (!errors) {
-            writer.generateFile(); // Generates the base .xlsx file to be written on
+            writer.generateFile();
             parseDocument(); // Parses XML document and writes to the Excel file one line at a time
             try {
                 writer.finish(); // Writes out file
@@ -64,7 +65,6 @@ public class ParseHandler extends DefaultHandler {
             // Check for negative input
             if (Integer.parseInt(ranges[0]) < 0 || Integer.parseInt(ranges[1]) < 0) {
                 errors = true;
-                g.setStatusLbl("ERROR: Negative numbers not allowed!");
                 return;
             } else {
                 lowerLimits.add(Integer.parseInt(ranges[0]));
@@ -80,13 +80,13 @@ public class ParseHandler extends DefaultHandler {
             SAXParser parser = factory.newSAXParser();
             parser.parse(bookXmlFileName, this);
         } catch (ParserConfigurationException e) {
-            g.setStatusLbl("Parse Config Error");
+//            g.setStatusLbl("Parse Config Error");
             e.printStackTrace();
         } catch (SAXException e) {
-            g.setStatusLbl("XML Not Well Formed");
+//            g.setStatusLbl("XML Not Well Formed");
             e.printStackTrace();
         } catch (IOException e) {
-            g.setStatusLbl("IO Error");
+//            g.setStatusLbl("IO Error");
             e.printStackTrace();
         }
     }

@@ -3,6 +3,7 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -15,6 +16,18 @@ public class ExcelWriter {
     static CellStyle styleLightBlue;
     static CellStyle styleLightGreen;
     static GUI g = GUI.getSharedApplication();
+
+    private ExcelWriter() { } // make your constructor private, so the only war
+    // to access "application" is through singleton pattern
+
+    private static ExcelWriter _app;
+
+    public static ExcelWriter getSharedApplication()
+    {
+        if (_app == null)
+            _app = new ExcelWriter();
+        return _app;
+    }
 
     public static void generateFile() {
         workbook = new XSSFWorkbook();
@@ -45,7 +58,7 @@ public class ExcelWriter {
         // Create a Row
         Row headerRow = sheet.createRow(0);
 
-        // Create cells
+        // Create
         for(int i = 0; i < columns.length; i++) {
             Cell cell = headerRow.createCell(i);
             cell.setCellValue(columns[i]);
@@ -81,12 +94,21 @@ public class ExcelWriter {
         }
 
         // Write the output to a file
-        FileOutputStream fileOut = new FileOutputStream("metabolites.xlsx");
+        File file = new File("metabolites.xlsx");
+
+        if (file.exists()) {
+            file.delete();
+        }
+
+        FileOutputStream fileOut = new FileOutputStream(file, false);
         workbook.write(fileOut);
         fileOut.close();
 
         // Closing the workbook
         workbook.close();
+
+        rowNum = 1
+        ;
 
         g.setStatusLbl("Successfully written to metabolites.xlsx");
     }
