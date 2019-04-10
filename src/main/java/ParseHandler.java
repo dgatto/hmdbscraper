@@ -1,6 +1,9 @@
 import java.io.IOException;
-import java.util.ArrayList;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -22,20 +25,11 @@ public class ParseHandler extends DefaultHandler {
     String logp = "";
     String normalConcentrations = "";
 
-    List<String> categories;
+    Properties query = new Properties();
 
-    List<Integer> lowerLimits = new ArrayList<>();
-    List<Integer> upperLimits = new ArrayList<>();
-
-    Metabolite metabolite = new Metabolite();
-    ExceptionHandler exceptionHandler = ExceptionHandler.getSharedApplication();
+    Metabolite metabolite = Metabolite.getSharedApplication();
     ExcelWriter writer = ExcelWriter.getSharedApplication();
 
-    int previousMetaboliteNumber = 0;
-
-    boolean singleInputQuery;
-    boolean getEverything = false;
-    boolean errors;
     boolean bMetabolite = false;
     boolean bAccession = false;
     boolean bName = false;
@@ -56,6 +50,7 @@ public class ParseHandler extends DefaultHandler {
     boolean bTissue = false;
     boolean bSource = false;
     boolean bNormalConcentrations = false;
+    boolean writeCharacters = false;
 
     public ParseHandler() {}
 
@@ -63,64 +58,15 @@ public class ParseHandler extends DefaultHandler {
     // Calls for the ExcelWriter to generate the file to be written to
     // Parses the XML document
     // Finishes up the Excel doc writing
-    protected void kickOff(String bookXmlFileName, String range, List<String> cats) {
-        categories = cats;
-        errors = false;
-        writeRanges(range);
+    protected void main(String bookXmlFileName, Properties queryInput) {
+        query = queryInput;
         this.bookXmlFileName = bookXmlFileName;
-        if (!errors) {
-            writer.generateFile();
-            parseDocument(); // Parses XML document and writes to the Excel file one line at a time
-            try {
-                writer.finish(); // Writes out file
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    protected void writeRanges(String ranges) {
-        // Handle empty input (which means that the user wants everything)
-        if (ranges.isEmpty()) {
-            getEverything = false;
-        } else {
-            // Split multiple ranges by the semicolons and make into an array (also just makes a single-input query into an array)
-            String[] splitRanges = ranges.split(";");
-            for (int i = 0; i < splitRanges.length; i++) {
-                splitRanges[i].trim();
-
-            }
-            getEverything = true;
-            assignRanges(splitRanges);
-        }
-    }
-
-    public void assignRanges(String[] ranges) {
-        // Boolean set up for if only a single input query
-        boolean singleInputQuery = ranges.length == 1 && ranges[0].split(",").length == 1;
-
-        if (singleInputQuery) {
-            if (Integer.parseInt(ranges[0]) >= 0) {
-                lowerLimits.add(Integer.parseInt(ranges[0]));
-                upperLimits.add(Integer.parseInt(ranges[0]));
-            } else if (Integer.parseInt(ranges[0]) < 0 && singleInputQuery) {
-                errors = true;
-                return;
-            }
-        }
-        // Parse by the commas and add the upper and lower limits to their lists
-        else {
-            for (int i = 0; i < ranges.length; i++) {
-                String[] splitRanges = ranges[i].split(",");
-                // Check for negative input
-                if (Integer.parseInt(splitRanges[0]) < 0 || Integer.parseInt(splitRanges[1]) < 0) {
-                    errors = true;
-                    return;
-                } else {
-                    lowerLimits.add(Integer.parseInt(splitRanges[0]));
-                    upperLimits.add(Integer.parseInt(splitRanges[1]));
-                }
-            }
+        writer.generateFile(); // generates initial XLSX document to be written on
+        parseDocument(); // Parses XML document and writes to the Excel file one line at a time
+        try {
+            writer.finish(); // Writes out file
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -169,9 +115,12 @@ public class ParseHandler extends DefaultHandler {
             solubility = "";
             logp = "";
             normalConcentrations = "";
-        } else if (element.equalsIgnoreCase("secondary_accessions") && (categories.isEmpty() || categories.contains("secondary_accessions"))) {
+        } else if (element.equalsIgnoreCase("accession")) {
+            writeCharacters = true;
+        } else if (element.equalsIgnoreCase("secondary_accessions")) {
             bSecondaryAccessionTree = true;
         } else if (element.equalsIgnoreCase("value")) {
+            writeCharacters = true;
             bValue = true;
         } else if (element.equalsIgnoreCase("kind")) {
             bKind = true;
@@ -182,89 +131,66 @@ public class ParseHandler extends DefaultHandler {
 
     @Override
     public void endElement(String s, String s1, String element) {
-
         if (bMetabolite) {
             if (element.equals("accession") && !bAccession) {
-                int currentAccessionNumber = Integer.parseInt(tmpValue.substring(4)); // cut "HMDB" off front of accession number
-                //if user wants everything
-                if (!getEverything) {
-                    previousMetaboliteNumber = 0; // sets starting point for counter
-                    if (currentAccessionNumber >= previousMetaboliteNumber) {
-                        bAccession = true;
-                        metabolite.setAccession(tmpValue);
-                        previousMetaboliteNumber++; // update range counter
-                    }
-                } else {
-                    previousMetaboliteNumber = lowerLimits.get(0); // sets starting point for counter
-                    // Check if in range
-                    for (int i = 0; i < lowerLimits.size(); i++) {
-                        if (currentAccessionNumber >= lowerLimits.get(i) && currentAccessionNumber <= upperLimits.get(i)) {
-                            // Tracks current position in sheet so as to not go over range (query would have erraneous data points; ex: when maximum was 400, would return specifically 427)
-                            // TODO: Figure out why this is happening instead of just covering it up
-                            if (currentAccessionNumber >= previousMetaboliteNumber) {
-                                bAccession = true;
-                                metabolite.setAccession(tmpValue);
-                                previousMetaboliteNumber++; // update range counter
-                            }
-                        }
-                    }
-                }
+                bAccession = true;
+                metabolite.set_hmdb_id(tmpValue);
             } else if (element.equalsIgnoreCase("accession") && bSecondaryAccessionTree) {
                 accessions = accessions + tmpValue + ",\n";
-            } else if (element.equalsIgnoreCase("name") && !bName && (categories.isEmpty() || categories.contains("name"))) {
-                metabolite.setName(tmpValue);
+            } else if (element.equalsIgnoreCase("name") && !bName) {
+                metabolite.set_name(tmpValue);
                 bName = true;
-            } else if (element.equalsIgnoreCase("chemical_formula") && !bFormula && (categories.isEmpty() || categories.contains("chemical_formula"))) {
-                metabolite.setFormula(tmpValue);
+            } else if (element.equalsIgnoreCase("chemical_formula") && !bFormula) {
+                metabolite.set_formula(tmpValue);
                 bFormula = true;
-            } else if (element.equalsIgnoreCase("monisotopic_molecular_weight") && !bMonoisotopicWeight && (categories.isEmpty() || categories.contains("monisotopic_molecular_weight"))) {
-                metabolite.setMonoisotopicMass(tmpValue);
-            } else if (element.equalsIgnoreCase("cas_registry_number") && !bCASNumber && (categories.isEmpty() || categories.contains("cas_registry_number"))) {
-                metabolite.setCasNumber(tmpValue);
-            } else if (element.equalsIgnoreCase("smiles") && !bSmiles && (categories.isEmpty() || categories.contains("smiles"))) {
-                metabolite.setSmiles(tmpValue);
-            } else if (element.equalsIgnoreCase("inchikey") && !bInChiKey && (categories.isEmpty() || categories.contains("inchikey"))) {
-                metabolite.setInchikey(tmpValue);
-            } else if (element.equalsIgnoreCase("kingdom") && !bKingdom && (categories.isEmpty() || categories.contains("kingdom"))) {
-                metabolite.setKingdom(tmpValue);
-            } else if (element.equalsIgnoreCase("super_class") && !bSuperClass && (categories.isEmpty() || categories.contains("super_class"))) {
-                metabolite.setMetaboliteSuperClass(tmpValue);
-            } else if (element.equalsIgnoreCase("class") && !bClass && (categories.isEmpty() || categories.contains("class"))) {
-                metabolite.setMetaboliteClass(tmpValue);
-            } else if (element.equalsIgnoreCase("sub_class") && !bSubClass && (categories.isEmpty() || categories.contains("sub_class"))) {
-                metabolite.setSubClass(tmpValue);
+            } else if (element.equalsIgnoreCase("monisotopic_molecular_weight") && !bMonoisotopicWeight) {
+                metabolite.set_monoisotopic_mass(tmpValue);
+            } else if (element.equalsIgnoreCase("cas_registry_number") && !bCASNumber) {
+                metabolite.set_cas_registry_number(tmpValue);
+            } else if (element.equalsIgnoreCase("smiles") && !bSmiles) {
+                metabolite.set_smiles(tmpValue);
+            } else if (element.equalsIgnoreCase("inchikey") && !bInChiKey) {
+                metabolite.set_inchikey(tmpValue);
+            } else if (element.equalsIgnoreCase("kingdom") && !bKingdom) {
+                metabolite.set_kingdom(tmpValue);
+            } else if (element.equalsIgnoreCase("super_class") && !bSuperClass) {
+                metabolite.set_super_class(tmpValue);
+            } else if (element.equalsIgnoreCase("class") && !bClass) {
+                metabolite.set_class(tmpValue);
+            } else if (element.equalsIgnoreCase("sub_class") && !bSubClass) {
+                metabolite.set_sub_class(tmpValue);
             } else if (element.equalsIgnoreCase("kind") && bKind) {
                 kind = tmpValue;
                 bKind = false;
             } else if (element.equalsIgnoreCase("value") && bValue && !kind.isEmpty()) {
-                if (kind.equalsIgnoreCase("melting_point") && (categories.isEmpty() || categories.contains("melting_point"))) {
-                    metabolite.setMeltingPoint(tmpValue);
-                } else if (kind.equalsIgnoreCase("boiling_point") && (categories.isEmpty() || categories.contains("boiling_point"))) {
-                    metabolite.setBoilingPoint(tmpValue);
-                } else if (kind.equalsIgnoreCase("water_solubility") && (categories.isEmpty() || categories.contains("water_solubility"))) {
-                    metabolite.setWaterSolubility(tmpValue);
-                } else if (kind.equalsIgnoreCase("solubility") && (categories.isEmpty() || categories.contains("solubility"))) {
+                if (kind.equalsIgnoreCase("melting_point")) {
+                    metabolite.set_melting_point(tmpValue);
+                } else if (kind.equalsIgnoreCase("boiling_point")) {
+                    metabolite.set_boiling_point(tmpValue);
+                } else if (kind.equalsIgnoreCase("water_solubility")) {
+                    metabolite.set_water_solubility(tmpValue);
+                } else if (kind.equalsIgnoreCase("solubility")) {
                     solubility = solubility + tmpValue + ",\n";
-                } else if (kind.equals("logp") && (categories.isEmpty() || categories.contains("logp"))) {
-                    metabolite.setLogp(tmpValue);
+                } else if (kind.equals("logp")) {
+                    metabolite.set_logp(tmpValue);
                 }
                 bValue = false;
             } else if (element.equalsIgnoreCase("source") && !bSource && !kind.isEmpty()) {
-                if (kind.equalsIgnoreCase("solubility") && (categories.isEmpty() || categories.contains("solubility"))) {
+                if (kind.equalsIgnoreCase("solubility")) {
                     solubility = solubility + tmpValue + ",\n";
-                } else if (kind.equals("logp") && (categories.isEmpty() || categories.contains("logp"))) {
+                } else if (kind.equals("logp")) {
                     logp = logp + tmpValue + ",\n";
                 }
                 bValue = false;
-            } else if (element.equalsIgnoreCase("cellular") && !bCellular && (categories.isEmpty() || categories.contains("cellular_locations"))) {
+            } else if (element.equalsIgnoreCase("cellular") && !bCellular) {
                 cellularLocations = cellularLocations + tmpValue + ",\n";
-            } else if (element.equalsIgnoreCase("biospecimen") && !bBiospecimen && (categories.isEmpty() || categories.contains("biospecimen_locations"))) {
+            } else if (element.equalsIgnoreCase("biospecimen") && !bBiospecimen) {
                 if (!bioLocations.contains(tmpValue)) {
                     bioLocations = bioLocations + tmpValue + ",\n";
                 }
-            } else if (element.equalsIgnoreCase("tissue") && !bTissue && (categories.isEmpty() || categories.contains("tissue_locations"))) {
+            } else if (element.equalsIgnoreCase("tissue") && !bTissue) {
                 tissueLocations = tissueLocations + tmpValue + ",\n";
-            } else if (element.equalsIgnoreCase("normal_concentrations") && bNormalConcentrations && (categories.isEmpty() || categories.contains("normal_concentrations"))) {
+            } else if (element.equalsIgnoreCase("normal_concentrations") && bNormalConcentrations) {
                 bNormalConcentrations = false;
             } else {
                 if (bNormalConcentrations && ((tmpValue.trim()).length() > 0)) {
@@ -275,22 +201,63 @@ public class ParseHandler extends DefaultHandler {
             // bAccession must be TRUE for now so that the counter works
             // TODO: find a way for the counter to still work but for the user to uncheck "Accessions" (why tf would you not want those tho)
             if (element.equalsIgnoreCase("metabolite") && bAccession) {
-                metabolite.setSecondaryAccessions(accessions);
-                metabolite.setCellularLocations(cellularLocations);
-                metabolite.setBiospecimenLocations(bioLocations);
-                metabolite.setTissueLocations(tissueLocations);
-                metabolite.setLogp(logp);
-                metabolite.setSolubility(solubility);
-                metabolite.setNormalConcentrations(normalConcentrations);
-                writer.write(metabolite);
+                metabolite.set_secondary_accessions(accessions);
+                metabolite.set_cellular_locations(cellularLocations);
+                metabolite.set_biospecimen_locations(bioLocations);
+                metabolite.set_tissue_locations(tissueLocations);
+                metabolite.set_logp(logp);
+                metabolite.set_solubility(solubility);
+                metabolite.set_normal_concentrations(normalConcentrations);
+                if (checkMetaboliteValidity()) {
+                    writer.write(metabolite);
+                }
                 metabolite.setNull(); // Forces the Metabolite object to be set null for GC
                 tmpValue = null;
                 bMetabolite = false;
             }
         }
     }
+
     @Override
     public void characters(char[] ac, int i, int j) {
-        tmpValue = new String (ac, i, j);
+        tmpValue = new String(ac, i, j);
+    }
+
+    private boolean checkMetaboliteValidity() {
+        String queryType = query.getProperty("queryType");
+        String queryContent = query.getProperty("queryContent");
+
+        boolean validity = false;
+        Object value = new Object();
+
+        // Use reflection to build method name for accessing proper Metabolite attribute
+        try {
+            // Build method name by metabolite accessor
+            Method metaboliteMethod = Metabolite.class.getDeclaredMethod("get_" + queryType);
+            try {
+                value = metaboliteMethod.invoke(Metabolite.getSharedApplication());
+            } catch (IllegalAccessException e) {
+                throw new IllegalArgumentException();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+
+            String metaboliteReturn = (String) value;
+
+            // List of query types to check against
+            List<String> queryTypeChecks = Arrays.asList("hmdb_id", "common_name");
+
+            for (int i = 0; i < queryTypeChecks.size(); i++) {
+                if (queryType.equalsIgnoreCase(queryTypeChecks.get(i)) && queryContent.equals(metaboliteReturn)) {
+                    validity = true;
+                } else {
+                    validity = false;
+                }
+            }
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+
+        return validity;
     }
 }

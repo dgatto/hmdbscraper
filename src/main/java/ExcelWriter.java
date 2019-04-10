@@ -76,88 +76,88 @@ public class ExcelWriter {
 
         Cell cell0 = row.createCell(0);
         cell0.setCellStyle(styleLightBlue);
-        cell0.setCellValue(m.getAccession());
+        cell0.setCellValue(m.get_hmdb_id());
 
         Cell cell1 = row.createCell(1);
         cell1.setCellStyle(styleLightGreen);
-        cell1.setCellValue(m.getName());
+        cell1.setCellValue(m.get_name());
 
         Cell cell2 = row.createCell(2);
         cell2.setCellStyle(styleLightGreen);
-        cell2.setCellValue(m.getFormula());
+        cell2.setCellValue(m.get_formula());
 
         Cell cell3 = row.createCell(3);
         cell3.setCellStyle(styleLightGreen);
-        cell3.setCellValue(m.getMonoisotopicMass());
+        cell3.setCellValue(m.get_monoisotopic_mass());
 
         Cell cell4 = row.createCell(4);
         cell4.setCellStyle(styleLightGreen);
-        cell4.setCellValue(m.getSecondaryAccessions());
+        cell4.setCellValue(m.get_secondary_accessions());
 
         Cell cell5 = row.createCell(5);
         cell5.setCellStyle(styleLightGreen);
-        cell5.setCellValue(m.getCasNumber());
+        cell5.setCellValue(m.get_cas_registry_number());
 
         Cell cell6 = row.createCell(6);
         cell6.setCellStyle(styleLightGreen);
-        cell6.setCellValue(m.getSmiles());
+        cell6.setCellValue(m.get_smiles());
 
         Cell cell7 = row.createCell(7);
         cell7.setCellStyle(styleLightGreen);
-        cell7.setCellValue(m.getInchikey());
+        cell7.setCellValue(m.get_inchikey());
 
         Cell cell8 = row.createCell(8);
         cell8.setCellStyle(styleLightGreen);
-        cell8.setCellValue(m.getKingdom());
+        cell8.setCellValue(m.get_kingdom());
 
         Cell cell9 = row.createCell(9);
         cell9.setCellStyle(styleLightGreen);
-        cell9.setCellValue(m.getMetaboliteSuperClass());
+        cell9.setCellValue(m.get_super_class());
 
         Cell cell10 = row.createCell(10);
         cell10.setCellStyle(styleLightGreen);
-        cell10.setCellValue(m.getMetaboliteClass());
+        cell10.setCellValue(m.get_class());
 
         Cell cell11 = row.createCell(11);
         cell11.setCellStyle(styleLightGreen);
-        cell11.setCellValue(m.getSubClass());
+        cell11.setCellValue(m.get_sub_class());
 
         Cell cell12 = row.createCell(12);
         cell12.setCellStyle(styleLightGreen);
-        cell12.setCellValue(m.getMeltingPoint());
+        cell12.setCellValue(m.get_melting_point());
 
         Cell cell13 = row.createCell(13);
         cell13.setCellStyle(styleLightGreen);
-        cell13.setCellValue(m.getBoilingPoint());
+        cell13.setCellValue(m.get_boiling_point());
 
         Cell cell14 = row.createCell(14);
         cell14.setCellStyle(styleLightGreen);
-        cell14.setCellValue(m.getWaterSolubility());
+        cell14.setCellValue(m.get_water_solubility());
 
         Cell cell15 = row.createCell(15);
         cell15.setCellStyle(styleLightGreen);
-        cell15.setCellValue(m.getSolubility());
+        cell15.setCellValue(m.get_solubility());
 
         Cell cell16 = row.createCell(16);
         cell16.setCellStyle(styleLightGreen);
-        cell16.setCellValue(m.getLogp());
+        cell16.setCellValue(m.get_logp());
 
         Cell cell17 = row.createCell(17);
         cell17.setCellStyle(styleLightGreen);
-        cell17.setCellValue(m.getCellularLocations());
+        cell17.setCellValue(m.get_cellular_locations());
 
         Cell cell18 = row.createCell(18);
         cell18.setCellStyle(styleLightGreen);
-        cell18.setCellValue(m.getBiospecimenLocations());
+        cell18.setCellValue(m.get_biospecimen_locations());
 
         Cell cell19 = row.createCell(19);
         cell19.setCellStyle(styleLightGreen);
-        cell19.setCellValue(m.getTissueLocations());
+        cell19.setCellValue(m.get_tissue_locations());
 
         Cell cell20 = row.createCell(20);
         cell20.setCellStyle(styleLightGreen);
         try {
-            cell20.setCellValue(m.getNormalConcentrations());
+            cell20.setCellValue(m.get_normal_concentrations());
         } catch(IllegalArgumentException e) {
             if (e.equals("The maximum length of cell contents (text) is 32,767 characters")) {
                 cell20.setCellValue("Value too long");
