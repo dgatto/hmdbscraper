@@ -14,7 +14,8 @@ public class QueryHandler {
         return _app;
     }
 
-    public Properties main(String queryContent, List<String> categoriesInput, String queryType) {
+    public Properties main(String range, List<String> categoriesInput, String queryType) {
+
         Properties builtQuery = new Properties();
         String categories = "";
 
@@ -23,7 +24,7 @@ public class QueryHandler {
             categories = categories + categoriesInput.get(i) + ", ";
         }
 
-        builtQuery.setProperty("queryContent", queryContent);
+        builtQuery.setProperty("queryContent", range);
         builtQuery.setProperty("queryCategories", categories);
         builtQuery.setProperty("queryType", queryType);
 

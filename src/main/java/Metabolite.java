@@ -1,153 +1,148 @@
-import java.util.List;
-
 public class Metabolite {
-    public String name, formula, monoisotopicMass, accession, secondaryAccessions, casNumber, smiles, inchikey, kingdom, metaboliteSuperClass, metaboliteClass,
+    public String name, formula, monoisotopicMass, hmdb_id, secondaryAccessions, casNumber, smiles, inchikey, kingdom, metaboliteSuperClass, metaboliteClass,
                     subClass, meltingPoint, boilingPoint, waterSolubility, logp, solubility, cellularLocations, biospecimenLocations, tissueLocations, normalConcentrations;
 
-    public String getNormalConcentrations() {
+    public String get_normal_concentrations() {
         return normalConcentrations;
     }
 
-    public void setNormalConcentrations(String normalConcentrations) {
+    public void set_normal_concentrations(String normalConcentrations) {
         this.normalConcentrations = normalConcentrations;
     }
 
-    public String getName() {
+    public String get_name() {
         return name;
     }
 
-    public void setName(String name) {
+    public void set_name(String name) {
         this.name = name;
     }
 
-    public String getFormula() {
+    public String get_formula() {
         return formula;
     }
 
-    public void setFormula(String formula) {
+    public void set_formula(String formula) {
         this.formula = formula;
     }
 
-    public String getAccession() {
-        return accession;
+    public String get_hmdb_id() {
+        return hmdb_id;
     }
 
-    public void setAccession(String accession) {
-        this.accession = accession;
+    public void set_hmdb_id(String hmdb_id) {
+        this.hmdb_id = hmdb_id;
     }
 
-    public String getMonoisotopicMass() {
+    public String get_monoisotopic_mass() {
         return monoisotopicMass;
     }
 
-    public void setMonoisotopicMass(String monoisotopicMass) {
+    public void set_monoisotopic_mass(String monoisotopicMass) {
         this.monoisotopicMass = monoisotopicMass;
     }
 
-    public String getSecondaryAccessions() {return secondaryAccessions;}
+    public String get_secondary_accessions() {return secondaryAccessions;}
 
-    public void setSecondaryAccessions(String accessions) {this.secondaryAccessions = accessions;}
+    public void set_secondary_accessions(String secondary_accessions) {this.secondaryAccessions = secondary_accessions; }
 
-    public String getCasNumber() { return casNumber; }
+    public String get_cas_registry_number() { return casNumber; }
 
-    public void setCasNumber(String cas) { this.casNumber = cas; }
+    public void set_cas_registry_number(String cas) { this.casNumber = cas; }
 
-    public String getSmiles() { return smiles; }
+    public String get_smiles() { return smiles; }
 
-    public void setSmiles(String smiles) { this.smiles = smiles; }
+    public void set_smiles(String smiles) { this.smiles = smiles; }
 
-    public String getInchikey() { return inchikey; }
+    public String get_inchikey() { return inchikey; }
 
-    public void setInchikey(String inchikey) { this.inchikey = inchikey; }
+    public void set_inchikey(String inchikey) { this.inchikey = inchikey; }
 
-    public String getKingdom() { return kingdom; }
+    public String get_kingdom() { return kingdom; }
 
-    public void setKingdom(String kingdom) { this.kingdom = kingdom; }
+    public void set_kingdom(String kingdom) { this.kingdom = kingdom; }
 
-    public String getMetaboliteSuperClass() { return metaboliteSuperClass; }
+    public String get_super_class() { return metaboliteSuperClass; }
 
-    public void setMetaboliteSuperClass(String superClassVar) { this.metaboliteSuperClass = superClassVar; }
+    public void set_super_class(String superClassVar) { this.metaboliteSuperClass = superClassVar; }
 
-    public String getMetaboliteClass() { return metaboliteClass; }
+    public String get_class() { return metaboliteClass; }
 
-    public void setMetaboliteClass(String classVar) { this.metaboliteClass = classVar; }
+    public void set_class(String classVar) { this.metaboliteClass = classVar; }
 
-    public String getSubClass() { return subClass; }
+    public String get_sub_class() { return subClass; }
 
-    public void setSubClass(String subClass) { this.subClass = subClass; }
+    public void set_sub_class(String subClass) { this.subClass = subClass; }
 
-    public String getMeltingPoint() {
+    public String get_melting_point() {
         return meltingPoint;
     }
 
-    public void setMeltingPoint(String meltingPoint) {
+    public void set_melting_point(String meltingPoint) {
         this.meltingPoint = meltingPoint;
     }
 
-    public String getBoilingPoint() {
+    public String get_boiling_point() {
         return boilingPoint;
     }
 
-    public void setBoilingPoint(String boilingPoint) {
+    public void set_boiling_point(String boilingPoint) {
         this.boilingPoint = boilingPoint;
     }
 
-    public String getSolubility() {
+    public String get_solubility() {
         return solubility;
     }
 
-    public void setSolubility(String solubility) {
+    public void set_solubility(String solubility) {
         this.solubility = solubility;
     }
 
-    public String getWaterSolubility() {
+    public String get_water_solubility() {
         return waterSolubility;
     }
 
-    public void setWaterSolubility(String waterSolubility) {
+    public void set_water_solubility(String waterSolubility) {
         this.waterSolubility = waterSolubility;
     }
 
-    public String getCellularLocations() {
+    public String get_cellular_locations() {
         return cellularLocations;
     }
 
-    public void setCellularLocations(String cellularLocations) {
+    public void set_cellular_locations(String cellularLocations) {
         this.cellularLocations = cellularLocations;
     }
 
-    public String getBiospecimenLocations() {
+    public String get_biospecimen_locations() {
         return biospecimenLocations;
     }
 
-    public void setBiospecimenLocations(String biospecimenLocations) {
+    public void set_biospecimen_locations(String biospecimenLocations) {
         this.biospecimenLocations = biospecimenLocations;
     }
 
-    public String getTissueLocations() {
+    public String get_tissue_locations() {
         return tissueLocations;
     }
 
-    public void setTissueLocations(String tissueLocations) {
+    public void set_tissue_locations(String tissueLocations) {
         this.tissueLocations = tissueLocations;
     }
 
-    public String getLogp() {
+    public String get_logp() {
         return logp;
     }
 
-    public void setLogp(String logp) {
+    public void set_logp(String logp) {
         this.logp = logp;
-    }
-
-    public Metabolite() {
     }
 
     public void setNull() {
         this.name = null;
         this.formula = null;
         this.monoisotopicMass = null;
-        this.accession = null;
+        this.hmdb_id = null;
         this.secondaryAccessions = null;
         this.casNumber = null;
         this.smiles = null;
@@ -173,7 +168,7 @@ public class Metabolite {
                 "name='" + name + '\'' +
                 ", formula='" + formula + '\'' +
                 ", monoisotopicMass='" + monoisotopicMass + '\'' +
-                ", accession='" + accession + '\'' +
+                ", accession='" + hmdb_id + '\'' +
                 ", secondaryAccessions='" + secondaryAccessions + '\'' +
                 ", casNumber='" + casNumber + '\'' +
                 ", smiles='" + smiles + '\'' +
@@ -193,4 +188,17 @@ public class Metabolite {
                 ", normalConcentrations='" + normalConcentrations + '\'' +
                 '}';
     }
+
+    private Metabolite() { } // make your constructor private, so the only war
+    // to access "application" is through singleton pattern
+
+    private static Metabolite _app;
+
+    public static Metabolite getSharedApplication()
+    {
+        if (_app == null)
+            _app = new Metabolite();
+        return _app;
+    }
+
 }

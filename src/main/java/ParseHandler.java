@@ -1,7 +1,5 @@
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -16,6 +14,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public class ParseHandler extends DefaultHandler {
     String bookXmlFileName;
     String tmpValue;
+    String categories;
     String accessions = "";
     String kind = "";
     String cellularLocations = "";
@@ -24,6 +23,7 @@ public class ParseHandler extends DefaultHandler {
     String solubility = "";
     String logp = "";
     String normalConcentrations = "";
+    List<Integer> rangeList = new ArrayList<>();
 
     Properties query = new Properties();
 
@@ -59,8 +59,17 @@ public class ParseHandler extends DefaultHandler {
     // Parses the XML document
     // Finishes up the Excel doc writing
     protected void main(String bookXmlFileName, Properties queryInput) {
+        String[] strRanges = queryInput.getProperty("queryContent").split("\\ ", -1);
+
+        for (int i = 0; i < strRanges.length; i ++) {
+            strRanges[i] = strRanges[i].replaceAll("[^\\d]", "");
+            rangeList.add(Integer.parseInt(strRanges[i]));
+        }
+
+        categories = queryInput.getProperty("queryCategories");
         query = queryInput;
         this.bookXmlFileName = bookXmlFileName;
+
         writer.generateFile(); // generates initial XLSX document to be written on
         parseDocument(); // Parses XML document and writes to the Excel file one line at a time
         try {
@@ -224,38 +233,14 @@ public class ParseHandler extends DefaultHandler {
     }
 
     private boolean checkMetaboliteValidity() {
-        String queryType = query.getProperty("queryType");
-        String queryContent = query.getProperty("queryContent");
-
         boolean validity = false;
-        Object value = new Object();
 
-        // Use reflection to build method name for accessing proper Metabolite attribute
-        try {
-            // Build method name by metabolite accessor
-            Method metaboliteMethod = Metabolite.class.getDeclaredMethod("get_" + queryType);
-            try {
-                value = metaboliteMethod.invoke(Metabolite.getSharedApplication());
-            } catch (IllegalAccessException e) {
-                throw new IllegalArgumentException();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
+        int currentId = Integer.parseInt(metabolite.get_hmdb_id().substring(4));
+
+        for (int i = 0; i < rangeList.size(); i++) {
+            if (rangeList.get(i) == currentId) {
+                validity = true;
             }
-
-            String metaboliteReturn = (String) value;
-
-            // List of query types to check against
-            List<String> queryTypeChecks = Arrays.asList("hmdb_id", "common_name");
-
-            for (int i = 0; i < queryTypeChecks.size(); i++) {
-                if (queryType.equalsIgnoreCase(queryTypeChecks.get(i)) && queryContent.equals(metaboliteReturn)) {
-                    validity = true;
-                } else {
-                    validity = false;
-                }
-            }
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
         }
 
         return validity;

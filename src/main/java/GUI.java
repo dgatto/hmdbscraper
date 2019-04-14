@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Properties;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
@@ -10,10 +11,11 @@ public class GUI extends Panel {
     Frame mainFrame; // hueh hueh gotta hack the mainframe
     String filename;
     String range;
-    JLabel errorLabel;
+    String queryType = "hmdb_id";
     JTextField rangeField = new JTextField(20);
     ParseHandler parser = new ParseHandler();
     ArrayList<String> categories = new ArrayList();
+    QueryHandler queryHandler = QueryHandler.getSharedApplication();
 
     private GUI() { } // make constructor private, so the only way to access "application" is through singleton pattern
 
@@ -40,7 +42,7 @@ public class GUI extends Panel {
      */
     private void createAndShowGUI() {
         //Create and set up the window.
-        JFrame frame = new JFrame("GridBagLayoutDemo");
+        JFrame frame = new JFrame("HMDB Metabolite Scraper");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Set up the content pane.
@@ -738,7 +740,7 @@ public class GUI extends Panel {
         categoryScrollPane.setViewportBorder(new LineBorder(Color.RED));
         pane.add(categoryScrollPane, c);
 
-        rangeInfoLabel = new JLabel("<html>Use comma separated values to specify a range of Metabolites.<br />Use semicolons to specify multiple ranges.<br />Example: 1,50;200,220;500,700</html>");
+        rangeInfoLabel = new JLabel("<html>Use comma or space separated values to specify which Metabolites to query.<br />Use semicolons to specify multiple ranges.<br />Examples:<br /> 1,50;200,220;500,700 <br /> HMDB0000001 HMDB0000002 HMDB0000003</html>");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.ipady = 0;      //height
         c.weightx = 0.0;
@@ -779,17 +781,14 @@ public class GUI extends Panel {
         c.gridx = 0;
         pane.add(generateButton, c);
 
-        errorLabel = new JLabel("application status...");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 5;
-        c.gridy = 0;
-        pane.add(errorLabel, c);
+
 
         generateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 range = rangeTextField.getText();
-                parser.kickOff(getFilename(), getRange(), categories);
+                Properties query = queryHandler.main(range, categories, queryType);
+                parser.main(filename, query);
             }
         });
 
@@ -817,17 +816,9 @@ public class GUI extends Panel {
         });
     }
 
-    public void setStatusLbl(String message) {
+//    public void setStatusLbl(String message) {
 //        System.out.println("doing it");
-//        errorLabel.setText(message);
-    }
-
-    public String getFilename() {
-        return filename;
-    }
-
-    public String getRange() {
-        return range;
-    }
+////        errorLabel.setText(message);
+//    }
 
 }
