@@ -28,7 +28,6 @@ public class ParseHandler extends DefaultHandler {
     List<Integer> upperLimits = new ArrayList<>();
 
     Metabolite metabolite = new Metabolite();
-    ExceptionHandler exceptionHandler = ExceptionHandler.getSharedApplication();
     ExcelWriter writer = ExcelWriter.getSharedApplication();
 
     int previousMetaboliteNumber = 0;
@@ -82,7 +81,7 @@ public class ParseHandler extends DefaultHandler {
     protected void writeRanges(String ranges) {
         // Handle empty input (which means that the user wants everything)
         if (ranges.isEmpty()) {
-            getEverything = false;
+            getEverything = true;
         } else {
             // Split multiple ranges by the semicolons and make into an array (also just makes a single-input query into an array)
             String[] splitRanges = ranges.split(";");
@@ -90,7 +89,7 @@ public class ParseHandler extends DefaultHandler {
                 splitRanges[i].trim();
 
             }
-            getEverything = true;
+            getEverything = false;
             assignRanges(splitRanges);
         }
     }
@@ -186,8 +185,8 @@ public class ParseHandler extends DefaultHandler {
         if (bMetabolite) {
             if (element.equals("accession") && !bAccession) {
                 int currentAccessionNumber = Integer.parseInt(tmpValue.substring(4)); // cut "HMDB" off front of accession number
-                //if user wants everything
-                if (!getEverything) {
+                // if user wants everything
+                if (getEverything) {
                     previousMetaboliteNumber = 0; // sets starting point for counter
                     if (currentAccessionNumber >= previousMetaboliteNumber) {
                         bAccession = true;
@@ -199,7 +198,7 @@ public class ParseHandler extends DefaultHandler {
                     // Check if in range
                     for (int i = 0; i < lowerLimits.size(); i++) {
                         if (currentAccessionNumber >= lowerLimits.get(i) && currentAccessionNumber <= upperLimits.get(i)) {
-                            // Tracks current position in sheet so as to not go over range (query would have erraneous data points; ex: when maximum was 400, would return specifically 427)
+                            // Tracks current position in sheet so as to not go over range (query would have erroneous data points; ex: when maximum was 400, would return specifically 427)
                             // TODO: Figure out why this is happening instead of just covering it up
                             if (currentAccessionNumber >= previousMetaboliteNumber) {
                                 bAccession = true;
