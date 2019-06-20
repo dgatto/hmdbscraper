@@ -27,7 +27,14 @@ public class ParseHandler extends DefaultHandler {
 
     Properties query = new Properties();
 
+<<<<<<< HEAD
     Metabolite metabolite = Metabolite.getSharedApplication();
+=======
+    List<Integer> lowerLimits = new ArrayList<>();
+    List<Integer> upperLimits = new ArrayList<>();
+
+    Metabolite metabolite = new Metabolite();
+>>>>>>> refs/remotes/origin/experimental
     ExcelWriter writer = ExcelWriter.getSharedApplication();
 
     boolean bMetabolite = false;
@@ -58,12 +65,44 @@ public class ParseHandler extends DefaultHandler {
     // Calls for the ExcelWriter to generate the file to be written to
     // Parses the XML document
     // Finishes up the Excel doc writing
+<<<<<<< HEAD
     protected void main(String bookXmlFileName, Properties queryInput) {
         String[] strRanges = queryInput.getProperty("queryContent").split("\\ ", -1);
 
         for (int i = 0; i < strRanges.length; i ++) {
             strRanges[i] = strRanges[i].replaceAll("[^\\d]", "");
             rangeList.add(Integer.parseInt(strRanges[i]));
+=======
+    protected void kickOff(String bookXmlFileName, String range, List<String> cats) {
+        categories = cats;
+        errors = false;
+        writeRanges(range);
+        this.bookXmlFileName = bookXmlFileName;
+        if (!errors) {
+            writer.generateFile();
+            parseDocument(); // Parses XML document and writes to the Excel file one line at a time
+            try {
+                writer.finish(); // Writes out file
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    protected void writeRanges(String ranges) {
+        // Handle empty input (which means that the user wants everything)
+        if (ranges.isEmpty()) {
+            getEverything = true;
+        } else {
+            // Split multiple ranges by the semicolons and make into an array (also just makes a single-input query into an array)
+            String[] splitRanges = ranges.split(";");
+            for (int i = 0; i < splitRanges.length; i++) {
+                splitRanges[i].trim();
+
+            }
+            getEverything = false;
+            assignRanges(splitRanges);
+>>>>>>> refs/remotes/origin/experimental
         }
 
         categories = queryInput.getProperty("queryCategories");
