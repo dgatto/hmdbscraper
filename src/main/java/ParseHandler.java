@@ -65,7 +65,7 @@ public class ParseHandler extends DefaultHandler {
     protected void kickOff(String bookXmlFileName, String range, List<String> cats) {
         categories = cats;
         errors = false;
-        writeRanges(range);
+        writeRanges(range);  // <- errors get set here
         this.bookXmlFileName = bookXmlFileName;
         if (!errors) {
             writer.generateFile();
