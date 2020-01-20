@@ -1,5 +1,3 @@
-import java.util.List;
-
 public class Metabolite {
     public String name, formula, monoisotopicMass, accession, secondaryAccessions, casNumber, smiles, inchikey, kingdom,
             metaboliteSuperClass, metaboliteClass, subClass, meltingPoint, boilingPoint, waterSolubility, logp,

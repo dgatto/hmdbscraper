@@ -119,13 +119,6 @@ public class GUI extends Panel {
         c.gridx = 0;
         c.gridy = 0;
         categoryCheckboxPanel.add(recordInfoTreeCheckBox, c);
-        //
-        // hmdbIdCheckBox = new JCheckBox("HMDB Accession ID");
-        // c.fill = GridBagConstraints.HORIZONTAL;
-        // c.insets = new Insets(0,10,0,0);
-        // c.gridx = 0;
-        // c.gridy = 1;
-        // categoryCheckboxPanel.add(hmdbIdCheckBox, c);
 
         secondaryAccessionNumbersCheckbox = new JCheckBox("Secondary Accession Numbers");
         c.insets = new Insets(0, 10, 0, 0);
