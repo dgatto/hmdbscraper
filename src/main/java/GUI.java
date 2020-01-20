@@ -7,13 +7,14 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 
 public class GUI extends Panel {
+    private static final long serialVersionUID = 1L;
     Frame mainFrame; // hueh hueh gotta hack the mainframe
     String filename;
     String range;
     JLabel errorLabel;
     JTextField rangeField = new JTextField(20);
     ParseHandler parser = new ParseHandler();
-    ArrayList<String> categories = new ArrayList();
+    ArrayList<String> categories = new ArrayList<String>();
 
     private GUI() {
     } // make constructor private, so the only way to access "application" is through
@@ -62,7 +63,6 @@ public class GUI extends Panel {
         }
 
         // TODO: just a huge refactor of this whole 'checkbox' business
-
         JLabel categoryInfoLabel;
         JLabel rangeInfoLabel;
         JButton generateButton;

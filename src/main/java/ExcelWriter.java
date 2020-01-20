@@ -31,7 +31,7 @@ public class ExcelWriter {
         return _app;
     }
 
-    public static void generateFile() {
+    public void generateFile() {
         workbook = new XSSFWorkbook();
 
         // Create a Sheet
@@ -68,7 +68,7 @@ public class ExcelWriter {
         }
     }
 
-    public static void write(Metabolite m) {
+    public void write(Metabolite m) {
         Row row = sheet.createRow(rowNum++);
 
         Cell cell0 = row.createCell(0);
@@ -156,14 +156,14 @@ public class ExcelWriter {
         try {
             cell20.setCellValue(m.getNormalConcentrations());
         } catch (IllegalArgumentException e) {
-            if (e.equals("The maximum length of cell contents (text) is 32,767 characters")) {
+            if (e.getMessage().equals("The maximum length of cell contents (text) is 32,767 characters")) {
                 cell20.setCellValue("Value too long");
             }
         }
 
     }
 
-    public static void finish() throws IOException {
+    public void finish() throws IOException {
         // Resize all columns to fit the content size
         for (int i = 0; i < columns.length; i++) {
             sheet.autoSizeColumn(i);
