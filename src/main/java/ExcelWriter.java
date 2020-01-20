@@ -2,19 +2,16 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class ExcelWriter {
 
-    private static String[] columns = {"HMDB.No", "Common Name", "Formula",
-            "Monoisotopic Weight", "Secondary Accessions",
-            "CAS", "SMILES", "InChlKey", "Kingdom", "SuperClass",
-            "Class", "SubClass", "Melting Point", "Boiling Point",
-            "Water Solubility", "Solubility", "logP", "Cellular Locations",
-            "Biospecimen Locations", "Tissue Locations", "Normal Concentrations"};
+    private static String[] columns = { "HMDB.No", "Common Name", "Formula", "Monoisotopic Weight",
+            "Secondary Accessions", "CAS", "SMILES", "InChlKey", "Kingdom", "SuperClass", "Class", "SubClass",
+            "Melting Point", "Boiling Point", "Water Solubility", "Solubility", "logP", "Cellular Locations",
+            "Biospecimen Locations", "Tissue Locations", "Normal Concentrations" };
     static Sheet sheet;
     static Workbook workbook;
     static int rowNum = 1;
@@ -22,13 +19,13 @@ public class ExcelWriter {
     static CellStyle styleLightGreen;
     static GUI g = GUI.getSharedApplication();
 
-    private ExcelWriter() { } // make your constructor private, so the only war
+    private ExcelWriter() {
+    } // make your constructor private, so the only war
     // to access "application" is through singleton pattern
 
     private static ExcelWriter _app;
 
-    public static ExcelWriter getSharedApplication()
-    {
+    public static ExcelWriter getSharedApplication() {
         if (_app == null)
             _app = new ExcelWriter();
         return _app;
@@ -64,14 +61,14 @@ public class ExcelWriter {
         Row headerRow = sheet.createRow(0);
 
         // Create
-        for(int i = 0; i < columns.length; i++) {
+        for (int i = 0; i < columns.length; i++) {
             Cell cell = headerRow.createCell(i);
             cell.setCellValue(columns[i]);
             cell.setCellStyle(headerCellStyle);
         }
     }
 
-    public static void write(Metabolite m){
+    public static void write(Metabolite m) {
         Row row = sheet.createRow(rowNum++);
 
         Cell cell0 = row.createCell(0);
@@ -158,7 +155,7 @@ public class ExcelWriter {
         cell20.setCellStyle(styleLightGreen);
         try {
             cell20.setCellValue(m.getNormalConcentrations());
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             if (e.equals("The maximum length of cell contents (text) is 32,767 characters")) {
                 cell20.setCellValue("Value too long");
             }
@@ -168,7 +165,7 @@ public class ExcelWriter {
 
     public static void finish() throws IOException {
         // Resize all columns to fit the content size
-        for(int i = 0; i < columns.length; i++) {
+        for (int i = 0; i < columns.length; i++) {
             sheet.autoSizeColumn(i);
         }
 
@@ -188,6 +185,6 @@ public class ExcelWriter {
 
         rowNum = 1;
 
-//        g.setStatusLbl("Successfully written to metabolites.xlsx");
+        // g.setStatusLbl("Successfully written to metabolites.xlsx");
     }
 }

@@ -15,7 +15,9 @@ public class GUI extends Panel {
     ParseHandler parser = new ParseHandler();
     ArrayList<String> categories = new ArrayList();
 
-    private GUI() { } // make constructor private, so the only way to access "application" is through singleton pattern
+    private GUI() {
+    } // make constructor private, so the only way to access "application" is through
+      // singleton pattern
 
     private static GUI _app;
 
@@ -34,19 +36,18 @@ public class GUI extends Panel {
     }
 
     /**
-     * Create the GUI and show it.  For thread safety,
-     * this method should be invoked from the
-     * event-dispatching thread.
+     * Create the GUI and show it. For thread safety, this method should be invoked
+     * from the event-dispatching thread.
      */
     private void createAndShowGUI() {
-        //Create and set up the window.
+        // Create and set up the window.
         JFrame frame = new JFrame("GridBagLayoutDemo");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //Set up the content pane.
+        // Set up the content pane.
         addComponentsToPane(frame.getContentPane());
 
-        //Display the window.
+        // Display the window.
         frame.pack();
         frame.setVisible(true);
     }
@@ -71,7 +72,6 @@ public class GUI extends Panel {
         JPanel categoryCheckboxPanel;
         JCheckBox recordInfoTreeCheckBox;
         JCheckBox metaboliteIdenTreeCheckbox;
-        JCheckBox hmdbIdCheckBox;
         JCheckBox secondaryAccessionNumbersCheckbox;
         JCheckBox commonNameCheckBox;
         JCheckBox structureCheckBox;
@@ -104,7 +104,7 @@ public class GUI extends Panel {
         pane.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         if (shouldFill) {
-            //natural height, maximum width
+            // natural height, maximum width
             c.fill = GridBagConstraints.HORIZONTAL;
         }
 
@@ -119,219 +119,220 @@ public class GUI extends Panel {
         c.gridx = 0;
         c.gridy = 0;
         categoryCheckboxPanel.add(recordInfoTreeCheckBox, c);
-//
-//        hmdbIdCheckBox = new JCheckBox("HMDB Accession ID");
-//        c.fill = GridBagConstraints.HORIZONTAL;
-//        c.insets = new Insets(0,10,0,0);
-//        c.gridx = 0;
-//        c.gridy = 1;
-//        categoryCheckboxPanel.add(hmdbIdCheckBox, c);
+        //
+        // hmdbIdCheckBox = new JCheckBox("HMDB Accession ID");
+        // c.fill = GridBagConstraints.HORIZONTAL;
+        // c.insets = new Insets(0,10,0,0);
+        // c.gridx = 0;
+        // c.gridy = 1;
+        // categoryCheckboxPanel.add(hmdbIdCheckBox, c);
 
         secondaryAccessionNumbersCheckbox = new JCheckBox("Secondary Accession Numbers");
-        c.insets = new Insets(0,10,0,0);
+        c.insets = new Insets(0, 10, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 2;
         categoryCheckboxPanel.add(secondaryAccessionNumbersCheckbox, c);
 
         metaboliteIdenTreeCheckbox = new JCheckBox("Metabolite Identification");
-        c.insets = new Insets(0,0,0,0);
+        c.insets = new Insets(0, 0, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 3;
         categoryCheckboxPanel.add(metaboliteIdenTreeCheckbox, c);
 
         commonNameCheckBox = new JCheckBox("Common Name");
-        c.insets = new Insets(0,10,0,0);
+        c.insets = new Insets(0, 10, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 5;
         categoryCheckboxPanel.add(commonNameCheckBox, c);
 
         structureCheckBox = new JCheckBox("Structure");
-        c.insets = new Insets(0,10,0,0);
+        c.insets = new Insets(0, 10, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 6;
         categoryCheckboxPanel.add(structureCheckBox, c);
 
         chemicalFormulaCheckBox = new JCheckBox("Chemical Formula");
-        c.insets = new Insets(0,10,0,0);
+        c.insets = new Insets(0, 10, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 7;
         categoryCheckboxPanel.add(chemicalFormulaCheckBox, c);
 
         monoMolecularWeightCheckBox = new JCheckBox("Monoisotopic Molecular Weight");
-        c.insets = new Insets(0,10,0,0);
+        c.insets = new Insets(0, 10, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 8;
         categoryCheckboxPanel.add(monoMolecularWeightCheckBox, c);
 
         casRegNumberCheckBox = new JCheckBox("CAS Registry Number");
-        c.insets = new Insets(0,10,0,0);
+        c.insets = new Insets(0, 10, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 9;
         categoryCheckboxPanel.add(casRegNumberCheckBox, c);
 
         smilesCheckBox = new JCheckBox("SMILES");
-        c.insets = new Insets(0,10,0,0);
+        c.insets = new Insets(0, 10, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 10;
         categoryCheckboxPanel.add(smilesCheckBox, c);
 
         inChlKeyCheckBox = new JCheckBox("inChl Key");
-        c.insets = new Insets(0,10,0,0);
+        c.insets = new Insets(0, 10, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 11;
         categoryCheckboxPanel.add(inChlKeyCheckBox, c);
 
         chemicalTaxonomyTreeCheckBox = new JCheckBox("Chemical Taxonomy");
-        c.insets = new Insets(0,0,0,0);
+        c.insets = new Insets(0, 0, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 12;
         categoryCheckboxPanel.add(chemicalTaxonomyTreeCheckBox, c);
 
         kingdomCheckBox = new JCheckBox("Kingdom");
-        c.insets = new Insets(0,10,0,0);
+        c.insets = new Insets(0, 10, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 13;
         categoryCheckboxPanel.add(kingdomCheckBox, c);
 
         superClassCheckBox = new JCheckBox("Super Class");
-        c.insets = new Insets(0,10,0,0);
+        c.insets = new Insets(0, 10, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 14;
         categoryCheckboxPanel.add(superClassCheckBox, c);
 
         classCheckBox = new JCheckBox("Class");
-        c.insets = new Insets(0,10,0,0);
+        c.insets = new Insets(0, 10, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 15;
         categoryCheckboxPanel.add(classCheckBox, c);
 
         subclassCheckBox = new JCheckBox("Sub Class");
-        c.insets = new Insets(0,10,0,0);
+        c.insets = new Insets(0, 10, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 16;
         categoryCheckboxPanel.add(subclassCheckBox, c);
 
         physicalPropsTreeCheckBox = new JCheckBox("Physical Properties");
-        c.insets = new Insets(0,0,0,0);
+        c.insets = new Insets(0, 0, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 17;
         categoryCheckboxPanel.add(physicalPropsTreeCheckBox, c);
 
         experimentalPropsSubTreeCheckBox = new JCheckBox("Experimental Properties");
-        c.insets = new Insets(0,10,0,0);
+        c.insets = new Insets(0, 10, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 18;
         categoryCheckboxPanel.add(experimentalPropsSubTreeCheckBox, c);
 
         meltingPointCheckBox = new JCheckBox("Melting Point");
-        c.insets = new Insets(0,20,0,0);
+        c.insets = new Insets(0, 20, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 19;
         categoryCheckboxPanel.add(meltingPointCheckBox, c);
 
         boilingPointCheckBox = new JCheckBox("Boiling Point");
-        c.insets = new Insets(0,20,0,0);
+        c.insets = new Insets(0, 20, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 20;
         categoryCheckboxPanel.add(boilingPointCheckBox, c);
 
         solubilityCheckBox = new JCheckBox("Solubility");
-        c.insets = new Insets(0,20,0,0);
+        c.insets = new Insets(0, 20, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 21;
         categoryCheckboxPanel.add(solubilityCheckBox, c);
 
         predictedPropsSubTreeCheckBox = new JCheckBox("Predicted Properties");
-        c.insets = new Insets(0,10,0,0);
+        c.insets = new Insets(0, 10, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 22;
         categoryCheckboxPanel.add(predictedPropsSubTreeCheckBox, c);
 
         waterSolubilityCheckBox = new JCheckBox("Water Solubility");
-        c.insets = new Insets(0,20,0,0);
+        c.insets = new Insets(0, 20, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 23;
         categoryCheckboxPanel.add(waterSolubilityCheckBox, c);
 
         logPCheckBox = new JCheckBox("Log P");
-        c.insets = new Insets(0,20,0,0);
+        c.insets = new Insets(0, 20, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 24;
         categoryCheckboxPanel.add(logPCheckBox, c);
 
         biologicalPropsTreeCheckBox = new JCheckBox("Biological Properties");
-        c.insets = new Insets(0,0,0,0);
+        c.insets = new Insets(0, 0, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 25;
         categoryCheckboxPanel.add(biologicalPropsTreeCheckBox, c);
 
         cellularLocationsCheckBox = new JCheckBox("Cellular Locations");
-        c.insets = new Insets(0,10,0,0);
+        c.insets = new Insets(0, 10, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 26;
         categoryCheckboxPanel.add(cellularLocationsCheckBox, c);
 
         biospecimenLocationsCheckBox = new JCheckBox("Biospecimen Locations");
-        c.insets = new Insets(0,10,0,0);
+        c.insets = new Insets(0, 10, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 27;
         categoryCheckboxPanel.add(biospecimenLocationsCheckBox, c);
 
         tissueLocationsCheckBox = new JCheckBox("Tissue Locations");
-        c.insets = new Insets(0,10,0,0);
+        c.insets = new Insets(0, 10, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 28;
         categoryCheckboxPanel.add(tissueLocationsCheckBox, c);
 
         normalConcentrationsCheckBox = new JCheckBox("Normal Concentrations");
-        c.insets = new Insets(0,10,0,0);
+        c.insets = new Insets(0, 10, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 29;
         categoryCheckboxPanel.add(normalConcentrationsCheckBox, c);
 
-//        hmdbIdCheckBox.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                if (hmdbIdCheckBox.isSelected() && !categories.contains("accession")) {
-//                    categories.add("accession");
-//                } else {
-//                    categories.remove("accession");
-//                }
-//
-//            }
-//        });
+        // hmdbIdCheckBox.addActionListener(new ActionListener() {
+        // @Override
+        // public void actionPerformed(ActionEvent e) {
+        // if (hmdbIdCheckBox.isSelected() && !categories.contains("accession")) {
+        // categories.add("accession");
+        // } else {
+        // categories.remove("accession");
+        // }
+        //
+        // }
+        // });
 
         secondaryAccessionNumbersCheckbox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (secondaryAccessionNumbersCheckbox.isSelected() && !categories.contains("secondaryAccessionNumbers")) {
+                if (secondaryAccessionNumbersCheckbox.isSelected()
+                        && !categories.contains("secondaryAccessionNumbers")) {
                     categories.add("secondary_accessions");
                 } else {
                     categories.remove("secondary_accessions");
@@ -564,11 +565,11 @@ public class GUI extends Panel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (recordInfoTreeCheckBox.isSelected()) {
-//                    hmdbIdCheckBox.setSelected(true);
+                    // hmdbIdCheckBox.setSelected(true);
                     secondaryAccessionNumbersCheckbox.setSelected(true);
                     categories.add("secondary_accessions");
                 } else {
-//                    hmdbIdCheckBox.setSelected(false);
+                    // hmdbIdCheckBox.setSelected(false);
                     secondaryAccessionNumbersCheckbox.setSelected(false);
                     categories.remove("secondary_accessions");
                 }
@@ -738,9 +739,10 @@ public class GUI extends Panel {
         categoryScrollPane.setViewportBorder(new LineBorder(Color.RED));
         pane.add(categoryScrollPane, c);
 
-        rangeInfoLabel = new JLabel("<html>Use comma separated values to specify a range of Metabolites.<br />Use semicolons to specify multiple ranges.<br />Example: 1,50;200,220;500,700</html>");
+        rangeInfoLabel = new JLabel(
+                "<html>Use comma separated values to specify a range of Metabolites.<br />Use semicolons to specify multiple ranges.<br />Example: 1,50;200,220;500,700</html>");
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.ipady = 0;      //height
+        c.ipady = 0; // height
         c.weightx = 0.0;
         c.gridwidth = 2;
         c.gridx = 0;
@@ -758,24 +760,24 @@ public class GUI extends Panel {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 2;
-        categoryScrollPane.setPreferredSize(new Dimension(200,200));
+        categoryScrollPane.setPreferredSize(new Dimension(200, 200));
 
         openFileDialogButton = new JButton("Select 'hmdb_metabolites' File");
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.ipady = 0;       //reset to default
-        c.weighty = 1.0;   //request any extra vertical space
-        c.insets = new Insets(10,0,0,0);  //top padding
-        c.gridy = 3;       //third row
+        c.ipady = 0; // reset to default
+        c.weighty = 1.0; // request any extra vertical space
+        c.insets = new Insets(10, 0, 0, 0); // top padding
+        c.gridy = 3; // third row
         c.gridx = 0;
         pane.add(openFileDialogButton, c);
 
         generateButton = new JButton("Generate Metabolites");
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.ipady = 0;       //reset to default
-        c.weighty = 1.0;   //request any extra vertical space
-        c.insets = new Insets(10,0,0,0);  //top padding
-        c.gridwidth = 1;   //2 columns wide
-        c.gridy = 4;       //third row
+        c.ipady = 0; // reset to default
+        c.weighty = 1.0; // request any extra vertical space
+        c.insets = new Insets(10, 0, 0, 0); // top padding
+        c.gridwidth = 1; // 2 columns wide
+        c.gridy = 4; // third row
         c.gridx = 0;
         pane.add(generateButton, c);
 
@@ -799,10 +801,12 @@ public class GUI extends Panel {
                 fileDialog.setVisible(true);
                 if (fileDialog.getFile() != null) {
                     filename = fileDialog.getDirectory() + fileDialog.getFile();
-//                    statusLbl.setText("File selected: " + fileDialog.getDirectory() + fileDialog.getFile());
+                    // statusLbl.setText("File selected: " + fileDialog.getDirectory() +
+                    // fileDialog.getFile());
                 } else {
                     filename = "hmdb_metabolites.xml";
-//                    statusLbl.setText("No file selected, default is hmdb_metabolites.xml in current directory.");
+                    // statusLbl.setText("No file selected, default is hmdb_metabolites.xml in
+                    // current directory.");
                 }
             }
         });
@@ -818,8 +822,8 @@ public class GUI extends Panel {
     }
 
     public void setStatusLbl(String message) {
-//        System.out.println("doing it");
-//        errorLabel.setText(message);
+        // System.out.println("doing it");
+        // errorLabel.setText(message);
     }
 
     public String getFilename() {
