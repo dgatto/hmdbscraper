@@ -21,7 +21,7 @@ public class ExcelWriter {
 
     private ExcelWriter() {
     } // make your constructor private, so the only war
-    // to access "application" is through singleton pattern
+      // to access "application" is through singleton pattern
 
     private static ExcelWriter _app;
 

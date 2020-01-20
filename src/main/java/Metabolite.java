@@ -1,8 +1,9 @@
 import java.util.List;
 
 public class Metabolite {
-    public String name, formula, monoisotopicMass, accession, secondaryAccessions, casNumber, smiles, inchikey, kingdom, metaboliteSuperClass, metaboliteClass,
-                    subClass, meltingPoint, boilingPoint, waterSolubility, logp, solubility, cellularLocations, biospecimenLocations, tissueLocations, normalConcentrations;
+    public String name, formula, monoisotopicMass, accession, secondaryAccessions, casNumber, smiles, inchikey, kingdom,
+            metaboliteSuperClass, metaboliteClass, subClass, meltingPoint, boilingPoint, waterSolubility, logp,
+            solubility, cellularLocations, biospecimenLocations, tissueLocations, normalConcentrations;
 
     public String getNormalConcentrations() {
         return normalConcentrations;
@@ -44,37 +45,69 @@ public class Metabolite {
         this.monoisotopicMass = monoisotopicMass;
     }
 
-    public String getSecondaryAccessions() {return secondaryAccessions;}
+    public String getSecondaryAccessions() {
+        return secondaryAccessions;
+    }
 
-    public void setSecondaryAccessions(String accessions) {this.secondaryAccessions = accessions;}
+    public void setSecondaryAccessions(String accessions) {
+        this.secondaryAccessions = accessions;
+    }
 
-    public String getCasNumber() { return casNumber; }
+    public String getCasNumber() {
+        return casNumber;
+    }
 
-    public void setCasNumber(String cas) { this.casNumber = cas; }
+    public void setCasNumber(String cas) {
+        this.casNumber = cas;
+    }
 
-    public String getSmiles() { return smiles; }
+    public String getSmiles() {
+        return smiles;
+    }
 
-    public void setSmiles(String smiles) { this.smiles = smiles; }
+    public void setSmiles(String smiles) {
+        this.smiles = smiles;
+    }
 
-    public String getInchikey() { return inchikey; }
+    public String getInchikey() {
+        return inchikey;
+    }
 
-    public void setInchikey(String inchikey) { this.inchikey = inchikey; }
+    public void setInchikey(String inchikey) {
+        this.inchikey = inchikey;
+    }
 
-    public String getKingdom() { return kingdom; }
+    public String getKingdom() {
+        return kingdom;
+    }
 
-    public void setKingdom(String kingdom) { this.kingdom = kingdom; }
+    public void setKingdom(String kingdom) {
+        this.kingdom = kingdom;
+    }
 
-    public String getMetaboliteSuperClass() { return metaboliteSuperClass; }
+    public String getMetaboliteSuperClass() {
+        return metaboliteSuperClass;
+    }
 
-    public void setMetaboliteSuperClass(String superClassVar) { this.metaboliteSuperClass = superClassVar; }
+    public void setMetaboliteSuperClass(String superClassVar) {
+        this.metaboliteSuperClass = superClassVar;
+    }
 
-    public String getMetaboliteClass() { return metaboliteClass; }
+    public String getMetaboliteClass() {
+        return metaboliteClass;
+    }
 
-    public void setMetaboliteClass(String classVar) { this.metaboliteClass = classVar; }
+    public void setMetaboliteClass(String classVar) {
+        this.metaboliteClass = classVar;
+    }
 
-    public String getSubClass() { return subClass; }
+    public String getSubClass() {
+        return subClass;
+    }
 
-    public void setSubClass(String subClass) { this.subClass = subClass; }
+    public void setSubClass(String subClass) {
+        this.subClass = subClass;
+    }
 
     public String getMeltingPoint() {
         return meltingPoint;
@@ -169,28 +202,15 @@ public class Metabolite {
 
     @Override
     public String toString() {
-        return "Metabolite{" +
-                "name='" + name + '\'' +
-                ", formula='" + formula + '\'' +
-                ", monoisotopicMass='" + monoisotopicMass + '\'' +
-                ", accession='" + accession + '\'' +
-                ", secondaryAccessions='" + secondaryAccessions + '\'' +
-                ", casNumber='" + casNumber + '\'' +
-                ", smiles='" + smiles + '\'' +
-                ", inchikey='" + inchikey + '\'' +
-                ", kingdom='" + kingdom + '\'' +
-                ", metaboliteSuperClass='" + metaboliteSuperClass + '\'' +
-                ", metaboliteClass='" + metaboliteClass + '\'' +
-                ", subClass='" + subClass + '\'' +
-                ", meltingPoint='" + meltingPoint + '\'' +
-                ", boilingPoint='" + boilingPoint + '\'' +
-                ", waterSolubility='" + waterSolubility + '\'' +
-                ", logp='" + logp + '\'' +
-                ", solubility='" + solubility + '\'' +
-                ", cellularLocations='" + cellularLocations + '\'' +
-                ", biospecimenLocations='" + biospecimenLocations + '\'' +
-                ", tissueLocations='" + tissueLocations + '\'' +
-                ", normalConcentrations='" + normalConcentrations + '\'' +
-                '}';
+        return "Metabolite{" + "name='" + name + '\'' + ", formula='" + formula + '\'' + ", monoisotopicMass='"
+                + monoisotopicMass + '\'' + ", accession='" + accession + '\'' + ", secondaryAccessions='"
+                + secondaryAccessions + '\'' + ", casNumber='" + casNumber + '\'' + ", smiles='" + smiles + '\''
+                + ", inchikey='" + inchikey + '\'' + ", kingdom='" + kingdom + '\'' + ", metaboliteSuperClass='"
+                + metaboliteSuperClass + '\'' + ", metaboliteClass='" + metaboliteClass + '\'' + ", subClass='"
+                + subClass + '\'' + ", meltingPoint='" + meltingPoint + '\'' + ", boilingPoint='" + boilingPoint + '\''
+                + ", waterSolubility='" + waterSolubility + '\'' + ", logp='" + logp + '\'' + ", solubility='"
+                + solubility + '\'' + ", cellularLocations='" + cellularLocations + '\'' + ", biospecimenLocations='"
+                + biospecimenLocations + '\'' + ", tissueLocations='" + tissueLocations + '\''
+                + ", normalConcentrations='" + normalConcentrations + '\'' + '}';
     }
 }
