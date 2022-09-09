@@ -300,7 +300,7 @@ public class ParseHandler extends DefaultHandler {
 
             // bAccession must be TRUE for now so that the counter works
             // TODO: find a way for the counter to still work but for the user to uncheck
-            // "Accessions" (why tf would you not want those tho)
+            // "Accessions" (why would you not want those tho)
             if (element.equalsIgnoreCase("metabolite") && bAccession) {
                 metabolite.setSecondaryAccessions(accessions);
                 metabolite.setCellularLocations(cellularLocations);
